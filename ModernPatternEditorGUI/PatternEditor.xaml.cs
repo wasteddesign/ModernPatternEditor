@@ -23,7 +23,7 @@ namespace WDE.ModernPatternEditor
 {
     public partial class PatternEditor : UserControl, INotifyPropertyChanged
     {
-        internal readonly string Version = "0.9.0.4 Beta";
+        internal readonly string Version = "0.9.0.5 Beta";
         ISong song;
 
         internal MPEPatternDatabase MPEPatternsDB;
@@ -848,6 +848,12 @@ namespace WDE.ModernPatternEditor
         }
 
         // From native
+        public void LostMidiFocus()
+        {
+            playRecordManager.Stop();
+        }
+
+        // From native
         public void AddTrack()
         {
             // This is also called when Ctrl+ is pressed. Commented out to avoid other issues.
@@ -948,6 +954,10 @@ namespace WDE.ModernPatternEditor
                             playRecordManager.UpdatePlayingNotePattern(mpeColumn.Parameter, mpeColumn.ParamTrack, buzzNote, velocity);
                         }
                     });
+                }
+                else
+                {
+                    playRecordManager.UpdatePlayingMidiNote(channel, value, velocity);
                 }
                 TargetMachine.SendMIDINote(channel, value, velocity);
             }

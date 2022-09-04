@@ -1,6 +1,7 @@
 ﻿using BuzzGUI.Common;
 using BuzzGUI.Common.InterfaceExtensions;
 using BuzzGUI.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -761,6 +762,25 @@ namespace WDE.ModernPatternEditor
 
 
             return machinePatternColumnData;
+        }
+
+        internal void UpdatePlayingMidiNote(int channel, int value, int velocity)
+        {
+            int buzzNote = BuzzNote.FromMIDINote(value);
+
+            if (velocity == 0)
+            {
+                PlayingNotesList.RemoveAll(x => x.note == buzzNote);
+            }
+            else
+            {
+                PlayingTrackInfo pti = new PlayingTrackInfo();
+                pti.note = buzzNote;
+                pti.track = -1;
+                pti.channel = channel;
+                pti.parameter = Editor.SelectedMachine.Machine.ParameterGroups[1].Parameters[0]; // Just get a parameter
+                PlayingNotesList.Add(pti); 
+            }
         }
     }
 }

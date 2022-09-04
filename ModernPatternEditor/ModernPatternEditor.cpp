@@ -343,6 +343,7 @@ void mi::GotMidiFocus()
 
 void mi::LostMidiFocus()
 {
+	gui.LostMidiFocus();
 }
 
 void mi::AddToRecBuffer(int key, int vel)

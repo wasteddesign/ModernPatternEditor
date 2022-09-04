@@ -435,6 +435,11 @@ public:
 	{
 		MGUI->Control->MidiControlChange(ctrl, channel, value);
 	}
+
+	void LostMidiFocus()
+	{
+		MGUI->Control->LostMidiFocus();
+	}
 };
 
 extern void CreateGUI(GUI &gui, HWND parent, NativeData *pnd);

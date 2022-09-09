@@ -44,6 +44,11 @@ namespace WDE.ModernPatternEditor
             {
                 PropertyChanged.Raise(this, "UndoableTrackCount");
             }
+            else if (e.PropertyName == "Patterns")
+            {
+                SortAllPatterns();
+                PropertyChanged.Raise(this, "Machine");
+            }
         }
 
         void machine_PatternRemoved(IPattern p)
@@ -66,13 +71,26 @@ namespace WDE.ModernPatternEditor
 
         void AddAllPatterns()
         {
-            foreach (var p in machine.Patterns)
+            foreach (var p in machine.Patterns.OrderBy(x => x.Name))
             {
                 var vm = new PatternVM(this, Editor) { Pattern = p };
                 patterns.Add(vm);
             }
 
             SelectedPattern = patterns.FirstOrDefault();
+        }
+
+        void SortAllPatterns()
+        {
+            var pattern = SelectedPattern.Pattern;
+            patterns.Clear();
+            foreach (var p in machine.Patterns.OrderBy(x => x.Name))
+            {
+                var vm = new PatternVM(this, Editor) { Pattern = p };
+                patterns.Add(vm);
+            }
+
+            SelectedPattern = Patterns.FirstOrDefault(x => x.Pattern == pattern);
         }
 
         public PatternEditor Editor { get; private set; }

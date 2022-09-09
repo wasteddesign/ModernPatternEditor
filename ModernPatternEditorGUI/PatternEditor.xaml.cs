@@ -23,7 +23,7 @@ namespace WDE.ModernPatternEditor
 {
     public partial class PatternEditor : UserControl, INotifyPropertyChanged
     {
-        internal readonly string Version = "0.9.0.5 Beta";
+        internal readonly string Version = "0.9.0.6 Beta";
         ISong song;
 
         internal MPEPatternDatabase MPEPatternsDB;
@@ -850,7 +850,7 @@ namespace WDE.ModernPatternEditor
         // From native
         public void LostMidiFocus()
         {
-            playRecordManager.Stop();
+            playRecordManager.StopNonEditorMidiNotes();
         }
 
         // From native

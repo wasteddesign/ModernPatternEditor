@@ -168,6 +168,26 @@ namespace WDE.ModernPatternEditor
             }
         }
 
+        internal void StopNonEditorMidiNotes()
+        {
+            lock (Editor.syncLock)
+            {
+                for( int i = 0; i < PlayingNotesList.Count; i++)
+                {
+                    var note = PlayingNotesList[i];
+
+                    if (note.track == -1)
+                    {
+                        var machine = note.parameter.Group.Machine;
+                        machine.SendMIDINote(note.channel, BuzzNote.ToMIDINote(note.note), 0);
+                        PlayingNotesList.RemoveAt(i);
+                        i--;
+                    }
+                }
+                PlayingNotesList.Clear();
+            }
+        }
+
         private void FireCollectedEvents(List<CollectedEventState> collectEvents)
         {
             Dictionary<IMachine, int> machines = new Dictionary<IMachine, int>();

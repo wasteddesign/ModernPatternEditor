@@ -105,9 +105,9 @@ namespace WDE.ModernPatternEditor.ColumnRenderer
             }
         }
 
-        public ColumnSetElement(int tpb)
+        public ColumnSetElement(int rpb)
         {
-            this.RPB = tpb;
+            this.RPB = rpb;
             Clear();
 
             this.SizeChanged += (sender, e) =>

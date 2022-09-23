@@ -238,7 +238,7 @@ namespace WDE.ModernPatternEditor
                             var param = pc.PatternColumn.Parameter;
                             var knob = new Knob() { Style = knobstyle, Minimum = param.MinValue, Maximum = param.MaxValue };
 
-                            var tttb = new TextBlock() { Margin = new Thickness(4, 0, 4, 0) };
+                            var tttb = new TextBlock() { Margin = new Thickness(4, 0, 4, 0), Foreground=Brushes.Black };
                             var ttb = new Border() { Child = tttb, Background = Brushes.LightYellow, BorderBrush = Brushes.Black, BorderThickness = new Thickness(1.0), Height = 18 };
                             var popup = new Popup() { Child = ttb, PlacementTarget = knob, Placement = PlacementMode.Right, HorizontalOffset = 4, VerticalOffset = -1 };
 
@@ -1326,7 +1326,7 @@ namespace WDE.ModernPatternEditor
             {
                 var v = pattern.GetValue(p);
                 var vs = pattern.GetValueString(p);
-                Editor.StatusBarItem2 = vs + " (" + v.ToString() + ")";
+                Editor.StatusBarItem2 = vs + " (" + v.ToString() + ") " + p.ParameterColumn.PatternColumn.Parameter.DescribeValue(v);
             }
             else
             {
@@ -1335,7 +1335,6 @@ namespace WDE.ModernPatternEditor
 
             var c = pattern.GetColumn(p);
             Editor.StatusBarItem3 = !string.IsNullOrEmpty(c.Description) ? c.Description : c.Label;
-
         }
 
         void MakeFieldVisible(Digit d)

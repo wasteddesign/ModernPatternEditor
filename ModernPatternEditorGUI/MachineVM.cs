@@ -82,15 +82,17 @@ namespace WDE.ModernPatternEditor
 
         void SortAllPatterns()
         {
-            var pattern = SelectedPattern.Pattern;
-            patterns.Clear();
-            foreach (var p in machine.Patterns.OrderBy(x => x.Name))
+            if (SelectedPattern != null)
             {
-                var vm = new PatternVM(this, Editor) { Pattern = p };
-                patterns.Add(vm);
+                var pattern = SelectedPattern.Pattern;
+                patterns.Clear();
+                foreach (var p in machine.Patterns.OrderBy(x => x.Name))
+                {
+                    var vm = new PatternVM(this, Editor) { Pattern = p };
+                    patterns.Add(vm);
+                }
+                SelectedPattern = Patterns.FirstOrDefault(x => x.Pattern == pattern);
             }
-
-            SelectedPattern = Patterns.FirstOrDefault(x => x.Pattern == pattern);
         }
 
         public PatternEditor Editor { get; private set; }

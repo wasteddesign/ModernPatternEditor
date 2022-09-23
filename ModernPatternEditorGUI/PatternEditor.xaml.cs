@@ -630,7 +630,6 @@ namespace WDE.ModernPatternEditor
                         chordsWindow = null;
                     };
                 }
-
             };
         }
 

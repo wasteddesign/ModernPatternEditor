@@ -1,1 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyName>Modern Pattern Editor.NET</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BuzzGUI.Common">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Jeskola\Buzz\BuzzGUI.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="BuzzGUI.Interfaces">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ReBuzz\BuzzGUI.Interfaces.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

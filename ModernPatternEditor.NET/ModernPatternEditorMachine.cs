@@ -1,4 +1,5 @@
-﻿using Buzz.MachineInterface;
+﻿using Accessibility;
+using Buzz.MachineInterface;
 using BuzzGUI.Common;
 using BuzzGUI.Common.Templates;
 using BuzzGUI.Interfaces;
@@ -189,6 +190,33 @@ namespace WDE.ModernPatternEditor
         public void CreatePatternCopy(IPattern pnew, IPattern p)
         {
             ModernPatternEditor.CreatePatternCopy(pnew.Name, p.Name);
+        }
+
+        // Update wave references if song/template was imported
+        public void UpdateWaveReferences(IPattern pattern, IDictionary<int, int> remap)
+        {
+            var mpePattern = ModernPatternEditor.MPEPatternsDB.GetMPEPattern(pattern);
+            foreach (var column in mpePattern.MPEPatternColumns)
+            {
+                if (column.Parameter.Flags.HasFlag(ParameterFlags.Wave))
+                {
+                    var events = column.GetEvents(0, int.MaxValue).ToArray();
+                    List<PatternEvent> newEvents = new List<PatternEvent>();
+                    for (int i = 0; i < events.Count(); i++)
+                    {
+                        var e = events[i];
+                        int wave = e.Value - 1;
+                        if (remap.ContainsKey(wave))
+                        {   
+                            e.Value = remap[wave] + 1;
+                            newEvents.Add(e);
+                        }
+                    }
+
+                    column.SetEvents(newEvents.ToArray(), false, false);
+                    column.SetEvents(newEvents.ToArray(), true, false);
+                }
+            }
         }
     }
 }

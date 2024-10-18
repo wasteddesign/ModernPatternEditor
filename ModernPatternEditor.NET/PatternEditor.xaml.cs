@@ -809,7 +809,7 @@ namespace WDE.ModernPatternEditor
         public IMachine TargetMachine
         {
             get { return targetMachine; }
-            private set
+            set
             {
                 if (targetMachine != null)
                 {

@@ -43,6 +43,16 @@ namespace WDE.ModernPatternEditor
         public void ImportFinished(IDictionary<string, string> machineNameMap)
         {
             PatternEditorUtils.MachineNameMap = machineNameMap;
+
+            // Redo everyting for this machine if machine names have been changed
+            var currentMachine = ModernPatternEditor.TargetMachine;
+            if (currentMachine != null)
+            {
+                ModernPatternEditor.SelectedMachine = null;
+                ModernPatternEditor.TargetMachine = null;
+
+                SetTargetMachine(currentMachine);
+            }
         }
 
         // Add this if Pattern Editor Machine

@@ -44,11 +44,11 @@ namespace WDE.ModernPatternEditor
         {
             PatternEditorUtils.MachineNameMap = machineNameMap;
 
-            // Redo everyting for this machine if machine names have been changed
+            // Redo everyting for this machine in case machine names have been changed after import
+            
             var currentMachine = ModernPatternEditor.TargetMachine;
             if (currentMachine != null)
             {
-                ModernPatternEditor.SelectedMachine = null;
                 ModernPatternEditor.TargetMachine = null;
 
                 SetTargetMachine(currentMachine);

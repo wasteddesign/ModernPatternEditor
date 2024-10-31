@@ -23,6 +23,7 @@ namespace WDE.ModernPatternEditor
                     machine.PropertyChanged -= machine_PropertyChanged;
                     machine.PatternAdded -= machine_PatternAdded;
                     machine.PatternRemoved -= machine_PatternRemoved;
+                    RemoveAllPatterns();
                 }
 
                 machine = value;
@@ -75,6 +76,16 @@ namespace WDE.ModernPatternEditor
             patterns.Add(vm);
             SelectedPattern = vm;
         }
+        void RemoveAllPatterns()
+        {
+            foreach (var p in patterns)
+            {
+                p.Pattern = null;
+            }
+
+            patterns.Clear();
+            SelectedPattern = null;
+        }
 
         void AddAllPatterns()
         {
@@ -117,7 +128,7 @@ namespace WDE.ModernPatternEditor
         {
             get { return selectedPattern; }
             set
-            {
+            {   
                 selectedPattern = value;
                 PropertyChanged.Raise(this, "SelectedPattern");
                 PropertyChanged.Raise(this, "HasSelectedPattern");

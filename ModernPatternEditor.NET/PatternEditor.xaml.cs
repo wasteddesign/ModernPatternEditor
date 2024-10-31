@@ -44,33 +44,6 @@ namespace WDE.ModernPatternEditor
             }
         }
 
-        private ObservableCollection<IMachine> machines = new ObservableCollection<IMachine>();
-        public ObservableCollection<IMachine> Machines { get => machines; set => machines = value; }
-
-        private IMachine changeMachine;
-        public IMachine ChangeMachine
-        {
-            get { return changeMachine; }
-            set
-            {
-                if (SelectedMachine != null &&
-                    SelectedMachine.Machine != value)
-                {
-                    changeMachine = value;
-
-                    // ...but change it back
-                    Dispatcher.InvokeAsync(() =>
-                    {   
-                        if (SelectedMachine != null)
-                        changeMachine = SelectedMachine.Machine; 
-                        PropertyChanged.Raise(this, "ChangeMachine");
-                    });
-
-                    Global.Buzz.SetPatternEditorMachine(value);
-                }
-            }
-        }
-
         public bool MidiEdit { get; set; }
         public int SelectedStepsDown { get; set; }
         public int SelectedStepsRight { get; set; }
@@ -95,7 +68,7 @@ namespace WDE.ModernPatternEditor
                     foreach (var m in song.Machines)
                         song_MachineRemoved(m);
 
-                    machines.Clear();
+                    //machines.Clear();
                 }
 
                 ColumnRenderer.BeatVisual.InvalidateResources();
@@ -126,14 +99,14 @@ namespace WDE.ModernPatternEditor
 
         private void song_MachineRemoved(IMachine obj)
         {
-            machines.Remove(obj);
+            //machines.Remove(obj);
             PropertyChanged.Raise(this, "Machines");
             PropertyChanged.Raise(this, "ChangeMachine");
         }
 
         private void song_MachineAdded(IMachine obj)
         {
-            machines.Add(obj);
+            //machines.Add(obj);
             PropertyChanged.Raise(this, "Machines");
             PropertyChanged.Raise(this, "ChangeMachine");
         }
@@ -224,8 +197,8 @@ namespace WDE.ModernPatternEditor
                     if (m.DLL.Info.Type == MachineType.Generator || m.IsControlMachine)
                         m.Graph.Buzz.MIDIFocusMachine = m;
 
-                    changeMachine = selectedMachine.Machine;
-                    PropertyChanged.Raise(this, "ChangeMachine");
+                    //changeMachine = selectedMachine.Machine;
+                    //PropertyChanged.Raise(this, "ChangeMachine");
                 }
             }
         }
@@ -445,7 +418,6 @@ namespace WDE.ModernPatternEditor
                 case "HexRowNumbers": UpdateAll(); break;
                 case "ColumnLabels": patternControl.CreateHeaders(); break;
                 case "ParameterKnobs": patternControl.CreateHeaders(); break;
-                //case "BuzzToolbars": PatternEditorUtils.BuzzToolbars(cb.GetEditorHWND(), Settings.BuzzToolbars); break;
             }
         }
 
@@ -526,7 +498,6 @@ namespace WDE.ModernPatternEditor
             MPEPatternsDB = new MPEPatternDatabase(this);
 
             this.ContextMenu = new ContextMenu();
-            //PatternEditorUtils.BuzzToolbars(cb.GetEditorHWND(), Settings.BuzzToolbars);
 
             this.Loaded += (sender, e) =>
             {
@@ -534,18 +505,6 @@ namespace WDE.ModernPatternEditor
                 PropertyChanged.Raise(this, "KeyboardMappings");
                 SelectedKeyboardMapping = KeyboardMappingFile.Default.DefaultMapping;
             };
-
-            /*
-            btDefThis.Click += (sender, e) =>
-            {
-                PatternEditorUtils.WriteRegistry<string>(selectedMachine.Machine.DLL.Name, editorMachine.Name, PatternEditorUtils.regPathBuzzMachineDefaultPE);
-            };
-
-            btDefAll.Click += (sender, e) =>
-            {
-                PatternEditorUtils.WriteRegistry<string>(PatternEditorUtils.regDefaultPE, editorMachine.Name, PatternEditorUtils.regPathBuzzSettings);
-            };
-            */
 
             btExportPattern.Click += (sender, e) =>
             {
@@ -569,12 +528,28 @@ namespace WDE.ModernPatternEditor
                 {
                     if (e.Key == Key.Add)
                     {
-                        patternBox.SelectedIndex++;
+                        //patternBox.SelectedIndex++;
+                        int index = SelectedMachine.patterns.IndexOf(SelectedMachine.SelectedPattern);
+                        if (index != -1)
+                        {
+                            index++;
+                            index = Math.Min(index, SelectedMachine.patterns.Count() - 1);
+                            var p = SelectedMachine.Patterns[index];
+                            Global.Buzz.SetPatternEditorPattern(p.Pattern);
+                        }
                         e.Handled = true;
                     }
                     else if (e.Key == Key.Subtract)
                     {
-                        if (patternBox.SelectedIndex > 0) patternBox.SelectedIndex--;
+                        //if (patternBox.SelectedIndex > 0) patternBox.SelectedIndex--;
+                        int index = SelectedMachine.patterns.IndexOf(SelectedMachine.SelectedPattern);
+                        if (index != -1)
+                        {
+                            index--;
+                            index = Math.Max(index, 0);
+                            var p = SelectedMachine.Patterns[index];
+                            Global.Buzz.SetPatternEditorPattern(p.Pattern);
+                        }
                         e.Handled = true;
                     }
                     else if (e.Key == Key.Return)
@@ -619,12 +594,12 @@ namespace WDE.ModernPatternEditor
                     if (e.Key == Key.Down)
                     {
                         // machineBox.SelectedIndex++;
-                        e.Handled = true;
+                        //e.Handled = true;
                     }
                     else if (e.Key == Key.Up)
                     {
                         //if (machineBox.SelectedIndex > 0) machineBox.SelectedIndex--;
-                        e.Handled = true;
+                        //e.Handled = true;
                     }
                     else if (e.Key == Key.Add)
                     {
@@ -646,7 +621,7 @@ namespace WDE.ModernPatternEditor
                         switch (e.SystemKey)
                         {
                             //case Key.M: machineBox.IsDropDownOpen = true; e.Handled = true; break;
-                            case Key.P: patternBox.IsDropDownOpen = true; e.Handled = true; break;
+                            //case Key.P: patternBox.IsDropDownOpen = true; e.Handled = true; break;
                             case Key.B: baseOctaveBox.IsDropDownOpen = true; e.Handled = true; break;
                             case Key.R: IsKeyboardMappingVisible = true; rootNoteBox.IsDropDownOpen = true; e.Handled = true; break;
                             case Key.Y: IsKeyboardMappingVisible = true; kbMappingBox.IsDropDownOpen = true; e.Handled = true; break;
@@ -665,7 +640,7 @@ namespace WDE.ModernPatternEditor
             InvalidateVisual(); // Force draw?
 
             //machineBox.DropDownClosed += (sender, e) => { patternControl.Focus(); };
-            patternBox.DropDownClosed += (sender, e) => { patternControl.Focus(); };
+            //patternBox.DropDownClosed += (sender, e) => { patternControl.Focus(); };
             baseOctaveBox.DropDownClosed += (sender, e) => { patternControl.Focus(); };
             rootNoteBox.DropDownClosed += (sender, e) => { patternControl.Focus(); };
             kbMappingBox.DropDownClosed += (sender, e) => { patternControl.Focus(); };
@@ -711,7 +686,8 @@ namespace WDE.ModernPatternEditor
             if (SelectedMachine != null)
                 SelectedMachine.Machine = null;
             SelectedMachine = null;
-            machines.Clear();
+            TargetMachine = null;
+            //machines.Clear();
             Song = null;
             Global.GeneralSettings.PropertyChanged -= GeneralSettings_PropertyChanged;
             Settings.PropertyChanged -= Settings_PropertyChanged;
@@ -750,8 +726,10 @@ namespace WDE.ModernPatternEditor
         {
             SelectMachine(p.Machine);
 
-            var sel = patternBox.Items.Cast<PatternVM>().Where(vm => vm.Pattern == p).FirstOrDefault();
-            if (sel != null) patternBox.SelectedItem = sel;
+            SelectedMachine.SelectedPattern = SelectedMachine.patterns.FirstOrDefault(pvm => pvm.Pattern == p);
+
+            //var sel = patternBox.Items.Cast<PatternVM>().Where(vm => vm.Pattern == p).FirstOrDefault();
+            //if (sel != null) patternBox.SelectedItem = sel;
         }
 
         public void SelectMachine(IMachine m)
@@ -801,9 +779,6 @@ namespace WDE.ModernPatternEditor
                 }
             }
         }
-        
-        //public ObservableCollection<IMachineDLL> EditorMachines { get; set; }
-
 
         IMachine targetMachine;
         public IMachine TargetMachine
@@ -816,40 +791,11 @@ namespace WDE.ModernPatternEditor
                 }
 
                 targetMachine = value;
-                /*
-                if (targetMachine != null)
-                {
-                    string ename = cb.GetEditorMachine();
-
-                    EditorMachine = Global.Buzz.MachineDLLs.Values.FirstOrDefault(x => x.Name == cb.GetEditorMachine());
-                    EditorMachines = new ObservableCollection<IMachineDLL>();
-                    foreach (var machine in Global.Buzz.MachineDLLs.Values)
-                    {
-                        if (machine.Info != null && (machine.Info.Flags & MachineInfoFlags.PATTERN_EDITOR) == MachineInfoFlags.PATTERN_EDITOR)
-                            EditorMachines.Add(machine);
-                    }
-                    PropertyChanged.Raise(this, "EditorMachines");
-                    PropertyChanged.Raise(this, "EditorMachine");
-                }
-                */
             }
         }
         
         public void InitMachine()
         {
-            /*
-            Application.Current.Dispatcher.InvokeAsync(new Action(() =>
-            {
-                lock (syncLock)
-                {
-                    string name = cb.GetTargetMachine();
-                    if (name != "")
-                    {
-                        Song = Global.Buzz.Song;
-                    }
-                }
-            }));
-            */
         }
 
         // This is called always when pattern is added
@@ -864,7 +810,7 @@ namespace WDE.ModernPatternEditor
                     MPEPatternsDB.Machine = TargetMachine;
 
                     if (patternEditorData != null)
-                    {
+                    {   
                         List<MPEPattern> patterns = PatternEditorUtils.ProcessEditorData(this, patternEditorData);
                         if (patterns.Count != 0)
                         {
@@ -880,10 +826,8 @@ namespace WDE.ModernPatternEditor
 
                     if (SelectedMachine == null)
                         SelectedMachine = new MachineVM(this) { Machine = TargetMachine };
-
-                    if (song == null)
-                        InitMachine();
-
+                    else
+                        SelectedMachine.Machine = machine;
                 }
             }
         }
@@ -948,9 +892,9 @@ namespace WDE.ModernPatternEditor
         {
             //lock (syncLock)
             {
-                if (TargetMachine != null)
+                if (TargetMachine != null && SelectedMachine != null)
                 {
-                    if (pattern != null)
+                    if (pattern != null && SelectedMachine.SelectedPattern.Pattern != pattern)
                         SelectPattern(pattern);
                 }
             }

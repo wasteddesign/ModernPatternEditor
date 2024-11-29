@@ -1,6 +1,7 @@
 ﻿using BuzzGUI.Common.Actions;
 using System;
 using System.Collections.Generic;
+using WDE.ModernPatternEditor.MPEStructures;
 
 namespace WDE.ModernPatternEditor
 {
@@ -173,7 +174,7 @@ namespace WDE.ModernPatternEditor
             }
         }
 
-        public IEnumerable<PatternColumnBeatRef> ColumnsAndBeats
+        public IEnumerable<MPEPatternColumnBeatRef> ColumnsAndBeats
         {
             get
             {
@@ -185,10 +186,10 @@ namespace WDE.ModernPatternEditor
 
                 while (true)
                 {
-                    var cr = new PatternColumnRef(cd.ParameterColumn.PatternColumn);
+                    var cr = new MPEPatternColumnRef(cd.ParameterColumn.PatternColumn);
 
                     for (int beat = bounds.Item1.Beat; beat <= bounds.Item2.Beat; beat++)
-                        yield return new PatternColumnBeatRef(cr, beat);
+                        yield return new MPEPatternColumnBeatRef(cr, beat);
 
                     if (cd.ColumnSet == bounds.Item2.ColumnSet && cd.Column == bounds.Item2.Column)
                         break;

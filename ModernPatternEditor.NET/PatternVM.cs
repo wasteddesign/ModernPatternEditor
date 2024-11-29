@@ -121,7 +121,7 @@ namespace WDE.ModernPatternEditor
         void CreateColumnSet(MPEParameterSet pSet)
         {
             var parameters = pSet.parameters;
-            if (parameters.Count() == 0) return;
+            if (parameters.Count == 0) return;
 
             var mpePattern = Editor.MPEPatternsDB.GetMPEPattern(pattern);
 

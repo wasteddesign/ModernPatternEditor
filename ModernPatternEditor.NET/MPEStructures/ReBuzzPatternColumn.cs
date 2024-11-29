@@ -1,4 +1,5 @@
-﻿using BuzzGUI.Interfaces;
+﻿using BuzzGUI.Common.Actions;
+using BuzzGUI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,8 @@ namespace WDE.ModernPatternEditor.MPEStructures
 {
     internal class ReBuzzPatternColumn : IPatternColumn
     {
+        internal MPEPattern MPEPattern { get; }
+
         public PatternColumnType Type { get; }
 
         public IPattern Pattern { get; }
@@ -36,8 +39,9 @@ namespace WDE.ModernPatternEditor.MPEStructures
         public event Action<int> BeatSubdivisionChanged;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ReBuzzPatternColumn(PatternColumnType type, IPattern pattern, IMachine machine, IParameter parameter, int track, Dictionary<int, int> beatSubdivisions, Dictionary<string, string> metadatas)
+        public ReBuzzPatternColumn(MPEPattern p, PatternColumnType type, IPattern pattern, IMachine machine, IParameter parameter, int track, Dictionary<int, int> beatSubdivisions, Dictionary<string, string> metadatas)
         {
+            MPEPattern = p;
             Type = type;
             Pattern = pattern;
             Machine = machine;
@@ -73,6 +77,42 @@ namespace WDE.ModernPatternEditor.MPEStructures
                     this.patternEvents.Remove(pe);
             }
             EventsChanged?.Invoke(patternEvents, set);
+        }
+    }
+
+    public struct MPEPatternColumnBeatRef
+    {
+        private readonly MPEPatternColumnRef column;
+
+        private readonly int beat;
+
+        public int Beat => beat;
+
+        public IPatternColumn GetColumn(MPEPattern p)
+        {
+            return column.GetColumn(p);
+        }
+
+        public MPEPatternColumnBeatRef(MPEPatternColumnRef pcr, int beat)
+        {
+            column = pcr;
+            this.beat = beat;
+        }
+    }
+
+    public struct MPEPatternColumnRef
+    {
+        private readonly int index;
+
+        public IPatternColumn GetColumn(MPEPattern p)
+        {
+            return p.Columns[index];
+        }
+
+        public MPEPatternColumnRef(IPatternColumn pc)
+        {
+            var mpepc = pc as ReBuzzPatternColumn;
+            index = mpepc.MPEPattern.Columns.IndexOf(mpepc);
         }
     }
 }

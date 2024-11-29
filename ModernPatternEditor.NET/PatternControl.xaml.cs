@@ -1219,7 +1219,7 @@ namespace WDE.ModernPatternEditor
 						digitIterator = digitIterator.SetColumn(columnIterator.Column).SetColumnSet(columnIterator.ColumnSet);
 					}
 					*/
-                    if (once && chordIndex >= buzzNotes.Count())
+                    if (once && chordIndex >= buzzNotes.Length)
                         break;
 
                     else if (digitIterator.Beat * BUZZ_TICKS_PER_BEAT * PatternEvent.TimeBase + digitIterator.TimeInBeat >=

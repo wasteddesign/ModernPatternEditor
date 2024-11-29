@@ -1,6 +1,7 @@
 ﻿using BuzzGUI.Common;
 using BuzzGUI.Common.Actions;
 using System;
+using WDE.ModernPatternEditor.MPEStructures;
 
 namespace WDE.ModernPatternEditor
 {
@@ -33,13 +34,16 @@ namespace WDE.ModernPatternEditor
             this.Index = index;
         }
 
-        public ParameterColumn ParameterColumn { get { return PatternVM.GetColumn(this) as ParameterColumn; } }
+        public ParameterColumn? ParameterColumn { get { return PatternVM.GetColumn(this) as ParameterColumn; } }
 
-        public PatternColumnBeatRef ColumnAndBeat
+        public MPEPatternColumnBeatRef ColumnAndBeat
         {
             get
             {
-                return new PatternColumnBeatRef(new PatternColumnRef(ParameterColumn.PatternColumn), Beat);
+                // ToDo: 1. Rename all MPEPatternColumnBeatRef to MPEMPEPatternColumnBeatRef and same with MPEPatternColumnRef
+                //       2. Create new versions of these
+                //       3. Make sure MPEMPEPatternColumnBeatRef return correct index
+                return new MPEPatternColumnBeatRef(new MPEPatternColumnRef(ParameterColumn.PatternColumn), Beat);
             }
         }
 

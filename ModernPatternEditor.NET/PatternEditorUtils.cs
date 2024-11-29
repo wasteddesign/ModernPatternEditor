@@ -279,7 +279,7 @@ namespace WDE.ModernPatternEditor
             if (ver > 1)
                 data.AddRange(BitConverter.GetBytes(pat.RowsPerBeat));
 
-            int count = pat.MPEPatternColumns.Count();
+            int count = pat.MPEPatternColumns.Count;
             data.AddRange(BitConverter.GetBytes(count));
 
             for (int i = 0; i < count; i++)
@@ -383,7 +383,7 @@ namespace WDE.ModernPatternEditor
                 CreateMPEPatternData(mpePattern, data, PATTERNXP_DATA_VERSION);
             }
 
-            int dataSize = data.Count() + sizeof(int);
+            int dataSize = data.Count + sizeof(int);
             data.InsertRange(2, BitConverter.GetBytes(dataSize));
 
             byte[] dataret = data.ToArray();
@@ -395,7 +395,7 @@ namespace WDE.ModernPatternEditor
             data.AddRange(BitConverter.GetBytes((int)(pat.Pattern.Length + PatternControl.BUZZ_TICKS_PER_BEAT - 1) / PatternControl.BUZZ_TICKS_PER_BEAT));
             data.AddRange(BitConverter.GetBytes(pat.RowsPerBeat));
 
-            int count = pat.MPEPatternColumns.Count();
+            int count = pat.MPEPatternColumns.Count;
             data.AddRange(BitConverter.GetBytes(count));
 
             for (int i = 0; i < count; i++)

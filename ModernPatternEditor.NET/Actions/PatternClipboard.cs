@@ -1,8 +1,6 @@
 ﻿using BuzzGUI.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
 using WDE.ModernPatternEditor.MPEStructures;
-using Wintellect.PowerCollections;
+//using Wintellect.PowerCollections;
 
 namespace WDE.ModernPatternEditor.Actions
 {
@@ -33,7 +31,7 @@ namespace WDE.ModernPatternEditor.Actions
         {
             if (c.columnBeatData != null)
             {
-                columnBeatData = new Dictionary<int, OrderedDictionary<int, int>>(); //new List<PatternColumnBeatRef>(c.columnBeatData.Count);
+                columnBeatData = new Dictionary<int, OrderedDictionary<int, int>>(); //new List<MPEPatternColumnBeatRef>(c.columnBeatData.Count);
                 foreach (var key in c.columnBeatData.Keys)
                 {
                     OrderedDictionary<int, int> dict = new OrderedDictionary<int, int>();

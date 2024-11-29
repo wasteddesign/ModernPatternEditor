@@ -114,7 +114,7 @@ namespace WDE.ModernPatternEditor.MPEStructures
 
         internal MPEPatternColumn CreateNewColumn(IParameter param, int track)
         {
-            int index = MPEPatternColumns.Count();
+            int index = MPEPatternColumns.Count;
             return CreateNewColumn(param, track, index);
         }
 
@@ -137,7 +137,7 @@ namespace WDE.ModernPatternEditor.MPEStructures
             return column;
         }
 
-        public MPEPatternColumn GetColumn(IPatternColumn column)
+        public MPEPatternColumn? GetColumn(IPatternColumn column)
         {
             int key = GetParamIndex(column.Parameter, column.Track);
             if (MPEPatternColumnsDict.ContainsKey(key))
@@ -146,7 +146,7 @@ namespace WDE.ModernPatternEditor.MPEStructures
                 return null;
         }
 
-        public MPEPatternColumn GetColumn(int num)
+        public MPEPatternColumn? GetColumn(int num)
         {
             if (MPEPatternColumnsDict.ContainsKey(num))
                 return MPEPatternColumnsDict[num];
@@ -251,7 +251,7 @@ namespace WDE.ModernPatternEditor.MPEStructures
                 if (this.RowsPerBeat == 0)
                     this.RowsPerBeat = 4;
 
-                if (MPEPatternColumns.Count() == 0)
+                if (MPEPatternColumns.Count == 0)
                 {
                     CreateDefaultColumns();
                     return;
@@ -353,7 +353,7 @@ namespace WDE.ModernPatternEditor.MPEStructures
                 // Clear
                 c.SetEvents(e, false);
 
-                for (int i = 0; i < e.Count(); i++)
+                for (int i = 0; i < e.Length; i++)
                 {
                     e[i].Time = c.GetTimeQuantized(e[i].Time);
                     dict[e[i].Time] = e[i];
@@ -427,7 +427,7 @@ namespace WDE.ModernPatternEditor.MPEStructures
         internal void InsertColumn(int index, IParameter p, int track)
         {
             PatternColumnType type = p.IndexInGroup == (int)InternalParameter.MidiNote || p.IndexInGroup == -1 ? PatternColumnType.MIDI : PatternColumnType.Parameter;
-            ReBuzzPatternColumn pcc = new ReBuzzPatternColumn(type, pattern, p.Group.Machine, p, track, null, null);
+            ReBuzzPatternColumn pcc = new ReBuzzPatternColumn(this, type, pattern, p.Group.Machine, p, track, null, null);
             Columns.Insert(index, pcc);
             //ColumnAdded?.Invoke(pcc);
         }
